@@ -6,6 +6,7 @@ import unittest
 from lupa.lua54 import LuaRuntime
 
 MOD = Path(__file__).resolve().parents[1]
+FIXTURE = MOD.parents[1] / "tests/unreal_fixture.lua"
 AA_METHOD = "r.AntiAliasingMethod"
 MENU_HOOK = "/Script/mucha.CPP_OptionFunctionHandler:HandleChangeAAType"
 CHOICE_METHODS = {0: 0, 1: 1, 2: 2, 3: 4}
@@ -14,7 +15,7 @@ CHOICE_METHODS = {0: 0, 1: 1, 2: 2, 3: 4}
 class RuntimeTests(unittest.TestCase):
     def setUp(self):
         self.lua = LuaRuntime()
-        self.lua.execute((MOD / "tests/unreal_fixture.lua").read_text())
+        self.lua.execute(FIXTURE.read_text())
         self.lua.execute((MOD / "src/main.lua").read_text())
         self.state = self.lua.globals()
         self.graphics = self.state["values"]

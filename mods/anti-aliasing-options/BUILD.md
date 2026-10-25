@@ -8,7 +8,8 @@ These are build/test tools; none are installed with the mod:
 * `tools/build_release.py` runs tests, packages the mod, and checks the ZIP.
 * `tools/MenuAssets/Program.cs` adds the AA row and choices using UAssetAPI
   1.1.0, which handles reading and writing the asset format.
-* `tests/test_runtime.py` tests the Lua script using `tests/unreal_fixture.lua`.
+* `tests/test_runtime.py` tests the Lua script using the shared
+  repository fixture, `tests/unreal_fixture.lua`.
 
 Use a virtual environment:
 

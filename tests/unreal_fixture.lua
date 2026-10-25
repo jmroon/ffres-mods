@@ -13,6 +13,9 @@ registered = {}
 commands = {}
 logs = {}
 saveWrites = 0
+saveReads = 0
+missingFunctions = false
+failHook = false
 controllerLookups = 0
 validWorld = true
 validOptions = true
@@ -60,6 +63,7 @@ function options:IsValid()
     return validOptions
 end
 function options:GetOptionSetting(tag)
+    saveReads = saveReads + 1
     assert(tag.TagName == "Delegate.UI.System.Option.Root.GraphicSetting.AAType")
     if failRead then
         error("Save unavailable")
@@ -87,10 +91,11 @@ function StaticFindObject(path)
     if path == "/Script/mucha.Default__CPP_BFL_SaveDataOption" then
         return options
     end
-    return { IsValid = function() return true end }
+    return { IsValid = function() return not missingFunctions end }
 end
 
 function RegisterHook(path, before, after)
+    if failHook then error("Hook unavailable") end
     assert(not registered[path], "Hook registered twice: " .. path)
     registered[path] = { before, after }
     return 1, 2

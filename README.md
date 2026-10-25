@@ -9,4 +9,11 @@ and keeps your choice active through loads and cutscenes.
 [Source](mods/anti-aliasing-options/src/main.lua) ·
 [Building](mods/anti-aliasing-options/BUILD.md)
 
+**TSR Always On** enables TSR automatically without adding a menu option.
+Includes a standalone ZIP with UE4SS and a script-only ZIP for existing setups.
+
+[Installation](mods/tsr-always-on/INSTALL.txt) ·
+[Source](mods/tsr-always-on/src/main.lua) ·
+[Building](mods/tsr-always-on/BUILD.md)
+
 Original code is [MIT licensed](LICENSE).
