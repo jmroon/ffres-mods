@@ -1,0 +1,10 @@
+{
+  "steam_build": "24250053",
+  "retoc": "0.1.5",
+  "files": {
+    "DT_OP_GraphicSetting.uasset": "401c3d2e1815418995a19bdb2defac8fdc53db6e0b9952c12024c0c919d67325",
+    "DT_OP_GraphicSetting.uexp": "66feafdb1deb2a9ae9ac6d9bfd609b3cd0344af46906f51521dd5a56f61e4418",
+    "DT_OP_GraphicSetting_Rank.uasset": "c89e463ca3e1cfc94e602a53fb1ae4a2fa91c61e2219c02ed3bdcfea36897cf6",
+    "DT_OP_GraphicSetting_Rank.uexp": "ad84479793cee7cc75966609050a9659fa1695d99b237bcd293a3092c0d32d0b"
+  }
+}

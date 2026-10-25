@@ -1,0 +1,27 @@
+BEFORE PUBLICATION
+
+Local preparation:
+- Run tests/test_runtime.py using requirements-dev.txt.
+- Rebuild with tools/build_release.py; inspect its verification report.
+- Confirm two builds produce the same ZIP checksum.
+- Review the Git diff for personal paths, saves, logs, proprietary input assets
+  and credentials. Generated files belong in ignored build/ and dist/ only.
+
+Remaining live checks for the renamed package:
+- Back up the existing mod installation and close the game.
+- Remove the private test files according to INSTALL.txt.
+- Install the ZIP with the documented UE4SS dependency and engine override.
+- Confirm Off / FXAA / TAA / TSR, default FXAA on a fresh option entry, and no
+  TSR Resolution row. Do not delete a personal save just to test defaults.
+- Apply each AA method, verify the active method and cancel an uncommitted edit.
+- Verify TAA through a load; TSR through a conversation/cutscene and restart.
+- Confirm the selected quality, rendering resolution and history remain untouched.
+- Uninstall and confirm the game still launches; preserve unrelated mods.
+
+Publication preparation:
+- Capture a clean AA menu screenshot and a short same-scene FXAA/TSR motion clip.
+- Verify that the tested UE4SS build remains obtainable from its upstream release.
+- Review nexus-description.txt, permissions and credits.
+- Change the local-candidate notices only after the final live checks pass.
+- Make a new versioned package if any shipped file changes.
+- Obtain approval before creating a remote repository or publishing anything.

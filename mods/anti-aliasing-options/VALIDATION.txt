@@ -1,0 +1,27 @@
+LOCAL RELEASE PREPARATION - 2026-10-25
+
+Passed:
+- Runtime behavior tests under Lua 5.4 via Lupa 2.6: all four AA choices,
+  six hooks, polling fallback, menu apply/cancel simulation, invalid/unavailable
+  saved data, transient read/queue failures, queue guard and no-op writes.
+- Scope checks: no save writes; rendering/history and other graphics values
+  remain unchanged, including non-default rendering/history test values.
+- Release runtime equals the installed, previously tested AA-only script,
+  apart from the log prefix and trailing whitespace.
+- Source asset hashes match the pinned vanilla inputs.
+- All ten original graphics-menu rows are unchanged; one AA Method row added.
+- Labels are exactly Off / FXAA / TAA / TSR; engine mapping is 0 / 1 / 2 / 4.
+- Exactly two assets packed and decoded again without differences.
+- ZIP contents match the allowlist; CRCs and per-file SHA-256 manifest pass.
+- Two independent builds produced identical ZIP bytes.
+
+Prepared archive:
+Anti-Aliasing-Options-1.0.0.zip (9,705 bytes)
+SHA-256: c57a80ab59c12d49fcebc3ef458eecc6bf648ea17f05eacd46711d008484cf4e
+
+Limits:
+These checks are local/offline and do not replace a live test of the renamed
+package. Earlier live tests used the development folder/container names.
+No game files were changed by release preparation. The new ZIP has not been
+installed into the game, published, or uploaded anywhere. Complete the live
+checks in RELEASE-CHECKLIST.txt before calling this a verified public release.

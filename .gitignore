@@ -1,0 +1,15 @@
+build/
+dist/
+.venv/
+__pycache__/
+*.pyc
+*.usmap
+*.uasset
+*.uexp
+*.ucas
+*.utoc
+*.pak
+*.dll
+*.exe
+*.log
+*.sav

@@ -1,0 +1,6 @@
+1.0.0 - Local release candidate, unpublished
+
+- Add AA Method: Off / FXAA / TAA / TSR.
+- Preserve the native saved choice through known loading and cutscene resets.
+- Use a lightweight fallback poll when hooks miss a reset or objects are unavailable.
+- Leave the existing quality row and all other graphics settings unchanged.
