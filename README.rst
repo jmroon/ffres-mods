@@ -30,7 +30,7 @@ from this repository. Build outputs never modify the installed game.
 
 Suggested future release tag: ``anti-aliasing-options-v1.0.0``. Each future mod
 can use its own version and release tag without versioning the whole collection.
-No remote, publication workflow or automatic upload is configured.
+No automatic release publication or upload workflow is configured.
 
 License
 -------
