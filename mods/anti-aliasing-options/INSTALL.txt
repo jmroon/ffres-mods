@@ -1,86 +1,33 @@
-ANTI-ALIASING OPTIONS 1.0.0
+ANTI-ALIASING OPTIONS
 
-Adds Off / FXAA / TAA / TSR under Graphics Settings > AA Method and maintains
-your saved choice through loads and cutscenes. The initial default is FXAA.
-The existing Anti-Aliasing quality setting remains separate.
-
-REQUIREMENTS
-
-FINAL FANTASY RESONANCE, Windows Steam edition.
-Tested with Steam build 24250053 (Unreal Engine 5.6).
-UE4SS is required and is NOT included in this download.
-Tested UE4SS: v3.0.1-1181-g83330635, non-dev package.
-https://github.com/UE4SS-RE/RE-UE4SS/releases/tag/experimental-latest
-Experimental releases change; newer builds are not automatically verified.
+Adds Off / FXAA / TAA / TSR to Graphics Settings > AA Method and keeps your
+choice active through loads and cutscenes. TSR costs more GPU time than FXAA.
 
 INSTALL
 
-1. Close the game. If UE4SS is already installed, preserve its existing mods
-   and settings. Otherwise install the tested UE4SS package with dwmapi.dll
-   and the ue4ss folder in FFRS/Binaries/Win64, beside FFRS-Win64-Shipping.exe.
-   Keep UE4SS's shared Lua helpers. Its optional example mods are not required.
-2. In FFRS/Binaries/Win64/ue4ss/UE4SS-settings.ini, set these values in the
-   existing section (do not replace the rest of the file):
+1. Close the game. Install UE4SS: place dwmapi.dll and its ue4ss folder in
+   FFRS/Binaries/Win64. Preserve any existing UE4SS mods and settings.
+   Tested: v3.0.1-1181-g83330635 (non-dev).
+   https://github.com/UE4SS-RE/RE-UE4SS/releases/tag/experimental-latest
+
+2. In ue4ss/UE4SS-settings.ini, update the existing section:
 
    [EngineVersionOverride]
    MajorVersion = 5
    MinorVersion = 6
 
-3. Extract this mod's FFRS folder into the game installation folder containing
-   FFRS.exe. Merge folders. The ZIP adds only these game-relative files:
+3. Extract this mod's FFRS folder beside FFRS.exe, merging folders.
+4. Launch the game, choose Graphics Settings > AA Method, then Apply.
 
-   FFRS/Content/Paks/~mods/zz_AntiAliasingOptions_P.pak
-   FFRS/Content/Paks/~mods/zz_AntiAliasingOptions_P.ucas
-   FFRS/Content/Paks/~mods/zz_AntiAliasingOptions_P.utoc
-   FFRS/Binaries/Win64/ue4ss/Mods/AntiAliasingOptions/Scripts/main.lua
-   FFRS/Binaries/Win64/ue4ss/Mods/AntiAliasingOptions/enabled.txt
-
-   The empty enabled.txt activates the mod. Do not replace your mods.txt.
-4. Launch the game. Open Graphics Settings, choose an AA Method and Apply.
-   A previously saved choice is retained. No Engine.ini edits are required.
-
-UPGRADING FROM THE PRIVATE TEST BUILD
-
-Close the game first. Remove only the old zz_AAMenuNativeTest_P.pak/.ucas/.utoc
-files from ~mods and the old Mods/RenderDiagnostics folder. Remove its
-RenderDiagnostics entry from mods.txt if present. Then install this release.
-Do not run both scripts or keep both versions of the menu containers.
-The existing saved AA choice uses the same setting and does not need migration.
-The abandoned TSR-resolution test is not part of this release; any unused
-saved resolution-preset entry is ignored. Do not delete your save data.
+No Engine.ini edits needed. Other graphics settings stay unchanged.
 
 UNINSTALL
 
-Close the game, then remove the three zz_AntiAliasingOptions_P files and the
-Mods/AntiAliasingOptions folder listed above. Leave other mods and UE4SS alone.
-The original game files are not overwritten. The saved menu choice may remain
-in OptionSaveData but is no longer enforced after the mod is removed.
+Close the game. Remove zz_AntiAliasingOptions_P.pak/.ucas/.utoc from
+FFRS/Content/Paks/~mods and the AntiAliasingOptions folder from
+FFRS/Binaries/Win64/ue4ss/Mods.
 
-NOTES / TROUBLESHOOTING
-
-TSR can substantially increase GPU load. Rendering resolution, history quality,
-DOF, bloom, exposure and other graphics settings remain controlled by the game.
-No DLSS/DLAA or resolution presets are included.
-
-If the row is absent, check that all three menu files are installed together.
-If a choice saves but the active AA resets, check UE4SS loading and the Lua mod.
-Logs: FFRS/Binaries/Win64/ue4ss/UE4SS.log; prefix [Anti-Aliasing Options].
-It only logs changed AA values or errors; unchanged settings need not log.
-Other mods changing the same graphics-menu table or AA method may conflict.
-
-This package is a local release candidate. Its renamed installation still needs
-a final live check before publication; the previous development layout was
-tested through loading, a conversation/cutscene and restart.
-
-CREDITS AND LICENSE
-
-Original mod code and documentation: jmroon, MIT (license below).
-The license applies to original code and documentation, not game-derived assets.
-Game content and trademarks belong to their respective owners. This is an
-unofficial mod and is not affiliated with the game's publisher.
-
-UE4SS-RE contributors provide the separate runtime dependency:
-https://github.com/UE4SS-RE/RE-UE4SS
-retoc by trumank and contributors is used to build the menu containers:
-https://github.com/trumank/retoc
-Neither dependency is bundled; each retains its own license.
+Source: https://github.com/jmroon/ffres-mods
+Credits: UE4SS-RE contributors and trumank/retoc contributors.
+MIT covers original mod code and documentation; game assets retain their
+owners' rights. License follows.

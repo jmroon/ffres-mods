@@ -9,7 +9,7 @@ Local preparation:
 
 Remaining live checks for the renamed package:
 - Back up the existing mod installation and close the game.
-- Remove the private test files according to INSTALL.txt.
+- Remove the private test files listed below.
 - Install the ZIP with the documented UE4SS dependency and engine override.
 - Confirm Off / FXAA / TAA / TSR, default FXAA on a fresh option entry, and no
   TSR Resolution row. Do not delete a personal save just to test defaults.
@@ -25,3 +25,10 @@ Publication preparation:
 - Change the local-candidate notices only after the final live checks pass.
 - Make a new versioned package if any shipped file changes.
 - Obtain approval before creating a remote repository or publishing anything.
+
+REMOVING THE PRIVATE TEST BUILD
+
+With the game closed, remove zz_AAMenuNativeTest_P.pak/.ucas/.utoc from ~mods,
+the ue4ss/Mods/RenderDiagnostics folder, and its entry in mods.txt if present.
+Then install the release ZIP. The saved AA choice is compatible; do not delete
+save data. An unused TSR-resolution-preset entry from the abandoned test is ignored.
