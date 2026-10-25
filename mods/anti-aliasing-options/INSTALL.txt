@@ -71,3 +71,16 @@ Other mods changing the same graphics-menu table or AA method may conflict.
 This package is a local release candidate. Its renamed installation still needs
 a final live check before publication; the previous development layout was
 tested through loading, a conversation/cutscene and restart.
+
+CREDITS AND LICENSE
+
+Original mod code and documentation: jmroon, MIT (license below).
+The license applies to original code and documentation, not game-derived assets.
+Game content and trademarks belong to their respective owners. This is an
+unofficial mod and is not affiliated with the game's publisher.
+
+UE4SS-RE contributors provide the separate runtime dependency:
+https://github.com/UE4SS-RE/RE-UE4SS
+retoc by trumank and contributors is used to build the menu containers:
+https://github.com/trumank/retoc
+Neither dependency is bundled; each retains its own license.

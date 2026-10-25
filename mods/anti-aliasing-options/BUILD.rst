@@ -38,17 +38,16 @@ Do not run Python with ``-O``: asset validation relies on assertions.
 The small decoder supports the formats needed for these tables; it is not a
 general Unreal asset editor. The UE5.6 legacy layout is intentionally checked.
 
-The build verifies all ten original rows are unchanged, the new method labels
-have the expected order, and both assets decode identically after IoStore
-conversion. It then writes these files to the ignored ``dist/`` directory:
+The build runs the Lua tests, then verifies all ten original rows are unchanged,
+the new method labels have the expected order, and both assets decode identically after IoStore
+conversion. It then writes one file to the ignored ``dist/`` directory:
 
 * ``Anti-Aliasing-Options-1.0.0.zip``
-* ``Anti-Aliasing-Options-1.0.0.zip.sha256``
-* ``Anti-Aliasing-Options-verification.json``
 
-The ZIP contains an exact allowlist of files and a SHA-256 manifest. Its runtime
-script must match ``src/main.lua`` byte-for-byte. ZIP timestamps and ordering
-are fixed; repeated builds should be compared for reproducibility.
+The ZIP contains only the five mod files and README.txt, including credits and
+the MIT license. The build checks its contents and requires the runtime script
+to match ``src/main.lua`` byte-for-byte. Checks report to the console; no checksum
+files, manifests or verification reports are generated.
 
 Each build uses a fresh temporary folder under ``build/``. Game files and
 caller-supplied input folders are only read. The build does not download tools,

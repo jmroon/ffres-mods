@@ -7,8 +7,6 @@ https://github.com/UE4SS-RE/RE-UE4SS
 UE4SS is a separate dependency, not redistributed in this package. Its own
 license and third-party notices apply to it.
 Tested download filename: UE4SS_v3.0.1-1181-g83330635.zip
-Tested archive SHA-256:
-b9a166a756605b21058a64cde93bcaab1a855dba3553e5c7e6ce0fa8fdfad7b9
 
 retoc by trumank and contributors is used to build IoStore containers.
 https://github.com/trumank/retoc

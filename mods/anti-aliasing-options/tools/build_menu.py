@@ -1,6 +1,6 @@
 """Build a separate four-choice AA-method row. Never edit installed game assets."""
 from pathlib import Path
-import json, struct, shutil
+import struct, shutil
 from decode_menu import decode, names_for, Reader, parse
 
 
@@ -111,9 +111,4 @@ def build_menu(SOURCE, DEST):
     write_asset(rank, rank_out, prefix, rename=True)
     assert [r['DisplayText']['text'] for r in decode(rank_out)['rows'].values()] == labels
     shutil.copy2(SOURCE / 'scriptobjects.bin', DEST / 'scriptobjects.bin')
-    (DEST.parent/'asset-verification.json').write_text(json.dumps({
-        'original_rows_unchanged': True, 'new_row': new,
-        'menu_index_labels': labels,
-        'scope': 'One menu-table override and one new method-label table. No game executable patch.',
-    }, indent=2))
     print('Verified: all 10 original rows unchanged; native AAType selector added with TSR at index3 (runtime maps to method4).')

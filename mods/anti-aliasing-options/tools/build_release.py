@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import zipfile
 
@@ -55,18 +56,12 @@ def verify_zip(archive_path):
         expected = {
             f'{RUNTIME}/Scripts/main.lua', f'{RUNTIME}/enabled.txt',
             *(f'{PAKS}/{CONTAINER}.{ext}' for ext in ('pak', 'ucas', 'utoc')),
-            'README.txt', 'LICENSE', 'THIRD-PARTY.txt', 'CHANGELOG.txt', 'manifest.json',
+            'README.txt',
         }
         if set(archive.namelist()) != expected or len(archive.namelist()) != len(expected):
             raise ValueError('Unexpected archive contents')
         if archive.testzip() is not None:
             raise ValueError('Archive CRC verification failed')
-        manifest = json.loads(archive.read('manifest.json'))
-        if set(manifest['files']) != expected - {'manifest.json'}:
-            raise ValueError('Manifest does not cover exactly the payload')
-        for name, checksum in manifest['files'].items():
-            if hashlib.sha256(archive.read(name)).hexdigest() != checksum:
-                raise ValueError(f'Archive checksum mismatch: {name}')
         if archive.read(f'{RUNTIME}/Scripts/main.lua') != (MOD / 'src/main.lua').read_bytes():
             raise ValueError('Packaged script differs from source')
         if archive.read(f'{RUNTIME}/enabled.txt') != b'':
@@ -82,6 +77,7 @@ def main():
     parser.add_argument('--retoc', type=Path, required=True, help='retoc 0.1.5 executable')
     parser.add_argument('--game-paks', type=Path, required=True, help='Original Paks folder; read-only')
     args = parser.parse_args()
+    run(sys.executable, MOD / 'tests/test_runtime.py')
     check_inputs(args.source)
     load_mappings(args.mappings)
     version = (MOD / 'VERSION').read_text().strip()
@@ -101,7 +97,7 @@ def main():
         for ext in ('utoc', 'ucas'):
             shutil.copy2(args.game_paks / f'global.{ext}', containers / f'global.{ext}')
         roundtrip = work / 'roundtrip'
-        run(args.retoc, 'to-legacy', '--version', 'UE5_6', '--no-shaders', containers, roundtrip)
+        run(args.retoc, 'to-legacy', '--version', 'UE5_6', '--no-shaders', '--no-parallel', containers, roundtrip)
         assets = list(legacy.rglob('*.uasset'))
         if len(assets) != 2 or len(list(roundtrip.rglob('*.uasset'))) != 2:
             raise ValueError('Expected exactly two menu assets')
@@ -116,27 +112,13 @@ def main():
         (stage / PAKS).mkdir(parents=True)
         for ext in ('pak', 'ucas', 'utoc'):
             shutil.copyfile(containers / f'{CONTAINER}.{ext}', stage / PAKS / f'{CONTAINER}.{ext}')
-        for source, name in [(MOD / 'INSTALL.txt', 'README.txt'), (REPO / 'LICENSE', 'LICENSE'),
-                             (MOD / 'THIRD-PARTY.txt', 'THIRD-PARTY.txt'),
-                             (MOD / 'CHANGELOG.txt', 'CHANGELOG.txt')]:
-            shutil.copyfile(source, stage / name)
-        manifest = {
-            'name': 'Anti-Aliasing Options', 'version': version,
-            'steam_build_tested': '24250053', 'ue4ss_tested': 'v3.0.1-1181-g83330635',
-            'files': {p.relative_to(stage).as_posix(): digest(p)
-                      for p in sorted(stage.rglob('*')) if p.is_file()},
-        }
-        (stage / 'manifest.json').write_text(json.dumps(manifest, indent=2)+'\n', encoding='utf-8')
+        readme = (MOD / 'INSTALL.txt').read_text(encoding='utf-8')
+        license_text = (REPO / 'LICENSE').read_text(encoding='utf-8')
+        (stage / 'README.txt').write_text(readme + '\n' + license_text, encoding='utf-8', newline='\n')
         candidate = work / 'candidate.zip'
         write_zip(stage, candidate)
         verify_zip(candidate)
         shutil.copyfile(candidate, archive_path)
-        report = json.loads((work / 'asset-verification.json').read_text())
-        report.update({'roundtrip_assets': 2, 'archive_verified': True,
-                       'runtime_source_matches': True, 'sha256': digest(archive_path),
-                       'live_test_of_renamed_package': 'Pending; no game files changed by this build'})
-        (dist / 'Anti-Aliasing-Options-verification.json').write_text(json.dumps(report, indent=2)+'\n')
-    (dist / (archive_path.name+'.sha256')).write_text(digest(archive_path)+'  '+archive_path.name+'\n')
     print(f'Built and verified: {archive_path}')
 
 

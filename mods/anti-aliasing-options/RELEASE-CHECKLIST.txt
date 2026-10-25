@@ -2,8 +2,8 @@ BEFORE PUBLICATION
 
 Local preparation:
 - Run tests/test_runtime.py using requirements-dev.txt.
-- Rebuild with tools/build_release.py; inspect its verification report.
-- Confirm two builds produce the same ZIP checksum.
+- Rebuild with tools/build_release.py; it runs the Lua tests and asset checks.
+- Confirm the ZIP contains only the five mod files and README.txt.
 - Review the Git diff for personal paths, saves, logs, proprietary input assets
   and credentials. Generated files belong in ignored build/ and dist/ only.
 
