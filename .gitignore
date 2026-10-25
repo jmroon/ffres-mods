@@ -13,3 +13,7 @@ __pycache__/
 *.exe
 *.log
 *.sav
+
+# .NET build outputs
+**/bin/
+**/obj/

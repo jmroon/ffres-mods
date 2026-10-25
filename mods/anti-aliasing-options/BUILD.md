@@ -1,7 +1,14 @@
 # Building Anti-Aliasing Options
 
-Run commands from the repository root. Python 3.11+, Lupa 2.6 for tests, and
-retoc 0.1.5 are required. No Unreal Editor installation is needed.
+Run commands from the repository root. Python 3.11+, Lupa 2.6, the .NET 10 SDK,
+and retoc 0.1.5 are required. No Unreal Editor installation is needed.
+
+These are build/test tools; none are installed with the mod:
+
+* `tools/build_release.py` runs tests, packages the mod, and checks the ZIP.
+* `tools/MenuAssets/Program.cs` adds the AA row and choices using UAssetAPI
+  1.1.0, which handles reading and writing the asset format.
+* `tests/test_runtime.py` tests the Lua script using `tests/unreal_fixture.lua`.
 
 Use a virtual environment:
 
@@ -39,13 +46,17 @@ Build:
 .venv\Scripts\python mods/anti-aliasing-options/tools/build_release.py --source build/vanilla --mappings "D:\ModTools\FFRS.usmap" --retoc "D:\ModTools\retoc.exe" --game-paks "D:\Games\FINAL FANTASY RESONANCE\FFRS\Content\Paks"
 ```
 
-Do not run Python with `-O`: asset validation relies on assertions.
-The small decoder supports the formats needed for these tables; it is not a
-general Unreal asset editor. The UE5.6 legacy layout is intentionally checked.
+The build restores the pinned UAssetAPI dependency from NuGet and compiles the
+menu tool automatically. Its dependency lock file is included in the source. If `dotnet` is
+not on PATH, pass `--dotnet "D:\ModTools\dotnet\dotnet.exe"`.
+
+UAssetAPI must read and write each input without changing its bytes. The builder
+then clones the existing menu row, edits named properties, and verifies the saved
+result. No custom binary parser or byte-offset patching is used.
 
 The build runs the Lua tests, then verifies all ten original rows are unchanged,
-the new method labels have the expected order, and both assets decode identically after IoStore
-conversion. It then writes one file to the ignored `dist/` directory:
+the new method labels have the expected order, and both assets decode identically
+after IoStore conversion. It then writes one file to the ignored `dist/` directory:
 
 * `Anti-Aliasing-Options-1.0.0.zip`
 
@@ -55,10 +66,12 @@ to match `src/main.lua` byte-for-byte. Checks report to the console; no checksum
 files, manifests or verification reports are generated.
 
 Each build uses a fresh temporary folder under `build/`. Game files and
-caller-supplied input folders are only read. The build does not download tools,
-install the mod, edit saves/configuration, launch the game or publish a release.
+caller-supplied input folders are only read. The build restores .NET dependencies
+but does not download retoc or mappings, install the mod, edit saves/configuration,
+launch the game or publish a release.
 
 Tool references:
 
+* [UAssetAPI](https://github.com/atenfyr/UAssetAPI)
 * [retoc](https://github.com/trumank/retoc)
 * [UE4SS](https://github.com/UE4SS-RE/RE-UE4SS)

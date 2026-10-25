@@ -1,95 +1,128 @@
-"""Exercise the production Lua with simulated Unreal objects and reset events."""
-from pathlib import Path
+"""Exercise the production Lua against a small Unreal/UE4SS fixture."""
 
-ROOT = Path(__file__).parent
+from pathlib import Path
+import unittest
+
 from lupa.lua54 import LuaRuntime
 
-lua = LuaRuntime()
-lua.execute('''
-values={['r.AntiAliasingMethod']=1,['r.ScreenPercentage']=100,
- ['r.TSR.History.ScreenPercentage']=100,['r.DepthOfFieldQuality']=2,
- ['sg.AntiAliasingQuality']=3,['r.BloomQuality']=5}
-saved={Value=3,IsDisplay=true,Type=2}
-registered={}; commands={}; saveWrites=0; controllerLookups=0; validWorld=true; validOptions=true
-failRead=false; failQueue=false; holdQueue=false; logs={}
-print=function(text) logs[#logs+1]=text end
-FName=function(text) return text end
-world={IsValid=function() return validWorld end}
-controller={IsValid=function() return true end,GetWorld=function() return world end}
-console={IsValid=function() return true end,
- GetConsoleVariableFloatValue=function(_,name) return values[name] end,
- ExecuteConsoleCommand=function(_,context,command,pc)
-  local key,value=command:match('^(%S+) (%S+)$')
-  assert(key=='r.AntiAliasingMethod', 'Unexpected graphics mutation')
-  commands[#commands+1]=command;values[key]=tonumber(value)
- end}
-options={IsValid=function() return validOptions end,
- GetOptionSetting=function(_,tag)
-  assert(tag.TagName=='Delegate.UI.System.Option.Root.GraphicSetting.AAType')
-  if failRead then error('save unavailable') end
-  return {Value=saved.Value,IsDisplay=saved.IsDisplay,Type=saved.Type}
- end,
- SetOptionSettingData=function(_,tag,value)
-  saveWrites=saveWrites+1;error("Script must not write option saves")
- end}
-package.preload.UEHelpers=function() return {
- GetPlayerController=function() controllerLookups=controllerLookups+1;return controller end,
- GetKismetSystemLibrary=function() return console end} end
-StaticFindObject=function(path)
- if path=='/Script/mucha.Default__CPP_BFL_SaveDataOption' then return options end
- return {IsValid=function() return true end}
-end
-RegisterHook=function(path,pre,post)
- assert(not registered[path]);registered[path]={pre,post};return 1,2
-end
-LoopAsync=function(interval,callback) assert(interval==250);poll=callback end
-ExecuteInGameThread=function(callback)
- if failQueue then error('queue failure') end
- if holdQueue then assert(not queued);queued=callback else callback() end
-end
-''')
-lua.execute((ROOT.parent / 'src/main.lua').read_text())
-lua.execute('''
-poll();assert(values['r.AntiAliasingMethod']==4)
-local count=0;for _ in pairs(registered) do count=count+1 end;assert(count==6)
-local methodHook=registered['/Script/mucha.CPP_OptionFunctionHandler:HandleChangeAAType']
-for choice,method in pairs({[0]=0,[1]=1,[2]=2,[3]=4}) do
- saved.Value=choice
- for name,hook in pairs(registered) do
-  values['r.AntiAliasingMethod']=1
-  local parameter={get=function() return {SelectedItem=choice} end}
-  assert(hook[1](nil,parameter)==nil and hook[2](nil,parameter)==nil)
-  assert(values['r.AntiAliasingMethod']==method, name)
- end
- values['r.AntiAliasingMethod']=1;poll();assert(values['r.AntiAliasingMethod']==method)
- local writes=#commands;poll();assert(#commands==writes, 'Unnecessary console write')
-end
--- The direct menu callback maps its argument without modifying the delegate.
-saved.Value=1
-local argument={SelectedItem=3}
-methodHook[2](nil,{get=function() return argument end})
-assert(values['r.AntiAliasingMethod']==4 and argument.SelectedItem==3)
-poll();assert(values['r.AntiAliasingMethod']==1, 'Cancelled edit was retained')
-saved.Value=3;poll();assert(values['r.AntiAliasingMethod']==4, 'Saved choice not followed')
--- Unknown/uninitialized data must not guess an AA choice.
-for _,unknown in ipairs({-1,4,7,1.5}) do
- saved.Value=unknown;values['r.AntiAliasingMethod']=2
- local lookups=controllerLookups;poll()
- methodHook[2](nil,{get=function() return {SelectedItem=unknown} end})
- assert(values['r.AntiAliasingMethod']==2 and controllerLookups==lookups)
-end
-saved.Value=3;validOptions=false;poll();assert(values['r.AntiAliasingMethod']==2)
-validOptions=true;validWorld=false;poll();assert(values['r.AntiAliasingMethod']==2)
-validWorld=true;failRead=true;poll();assert(values['r.AntiAliasingMethod']==2)
-failRead=false;failQueue=true;poll();assert(values['r.AntiAliasingMethod']==2)
-failQueue=false;holdQueue=true;poll();poll();assert(queued)
-local pending=queued;queued=nil;holdQueue=false;pending()
-assert(values['r.AntiAliasingMethod']==4)
-values['r.ScreenPercentage']=75;values['r.TSR.History.ScreenPercentage']=200;poll()
-assert(values['r.ScreenPercentage']==75 and values['r.TSR.History.ScreenPercentage']==200)
-assert(values['r.DepthOfFieldQuality']==2 and values['sg.AntiAliasingQuality']==3
- and values['r.BloomQuality']==5)
-assert(saveWrites==0, 'Unexpected save mutation')
-''')
-print('PASS: all four choices, six hooks, poll fallback, menu cancel/apply, read-only save access,')
-print('      missing/invalid saves, transient errors, queue guard, no-op writes, graphics scope.')
+MOD = Path(__file__).resolve().parents[1]
+AA_METHOD = "r.AntiAliasingMethod"
+MENU_HOOK = "/Script/mucha.CPP_OptionFunctionHandler:HandleChangeAAType"
+CHOICE_METHODS = {0: 0, 1: 1, 2: 2, 3: 4}
+
+
+class RuntimeTests(unittest.TestCase):
+    def setUp(self):
+        self.lua = LuaRuntime()
+        self.lua.execute((MOD / "tests/unreal_fixture.lua").read_text())
+        self.lua.execute((MOD / "src/main.lua").read_text())
+        self.state = self.lua.globals()
+        self.graphics = self.state["values"]
+        self.state.poll()  # Register hooks and apply the fixture's saved TSR choice.
+
+    def tearDown(self):
+        self.assertEqual(self.state.saveWrites, 0, "Script modified option saves")
+
+    def assert_method(self, expected):
+        self.assertEqual(self.graphics[AA_METHOD], expected)
+
+    def preview_choice(self, choice):
+        parameter = self.state.menuParameter(choice)
+        self.state.registered[MENU_HOOK][2](None, parameter)
+        self.assertEqual(parameter.get().SelectedItem, choice, "Delegate was modified")
+
+    def test_startup_registers_six_hooks_and_restores_tsr(self):
+        self.assertEqual(len(list(self.state.registered.items())), 6)
+        self.assert_method(4)
+
+    def test_every_hook_restores_each_choice(self):
+        for choice, method in CHOICE_METHODS.items():
+            self.state.saved.Value = choice
+            for name, hook in self.state.registered.items():
+                with self.subTest(choice=choice, hook=name):
+                    self.graphics[AA_METHOD] = 1  # Simulate a game reset.
+                    parameter = self.state.menuParameter(choice)
+                    self.assertIsNone(hook[1](None, parameter))
+                    self.assertIsNone(hook[2](None, parameter))
+                    self.assert_method(method)
+
+    def test_poll_restores_each_choice_without_redundant_writes(self):
+        for choice, method in CHOICE_METHODS.items():
+            with self.subTest(choice=choice):
+                self.state.saved.Value = choice
+                self.graphics[AA_METHOD] = 1
+                self.state.poll()
+                self.assert_method(method)
+                writes = len(self.state.commands)
+                self.state.poll()
+                self.assertEqual(len(self.state.commands), writes)
+
+    def test_menu_preview_reverts_on_cancel_and_follows_saved_choice(self):
+        self.state.saved.Value = 1
+        self.preview_choice(3)
+        self.assert_method(4)
+        self.state.poll()  # The cancelled preview did not change the saved FXAA choice.
+        self.assert_method(1)
+        self.state.saved.Value = 3
+        self.state.poll()
+        self.assert_method(4)
+
+    def test_unknown_choices_skip_without_looking_up_the_player(self):
+        for choice in (-1, 4, 7, 1.5):
+            with self.subTest(choice=choice):
+                self.state.saved.Value = choice
+                self.graphics[AA_METHOD] = 2
+                lookups = self.state.controllerLookups
+                self.state.poll()
+                self.preview_choice(choice)
+                self.assert_method(2)
+                self.assertEqual(self.state.controllerLookups, lookups)
+
+    def test_unavailable_objects_and_transient_errors_skip_then_recover(self):
+        failures = {
+            "validOptions": False,
+            "validWorld": False,
+            "failRead": True,
+            "failQueue": True,
+        }
+        for flag, failure_value in failures.items():
+            with self.subTest(failure=flag):
+                self.graphics[AA_METHOD] = 2
+                self.state[flag] = failure_value
+                self.state.poll()
+                self.assert_method(2)
+                self.state[flag] = not failure_value
+                self.state.poll()
+                self.assert_method(4)
+
+    def test_only_one_poll_can_wait_on_the_game_thread(self):
+        self.graphics[AA_METHOD] = 2
+        self.state.holdQueue = True
+        self.state.poll()
+        self.state.poll()  # The fixture rejects a second queued callback.
+        self.assert_method(2)
+        pending = self.state.queued
+        self.assertIsNotNone(pending)
+        self.state.queued = None
+        self.state.holdQueue = False
+        pending()
+        self.assert_method(4)
+
+    def test_other_graphics_settings_are_untouched(self):
+        expected = {
+            "r.ScreenPercentage": 75,
+            "r.TSR.History.ScreenPercentage": 200,
+            "r.DepthOfFieldQuality": 2,
+            "sg.AntiAliasingQuality": 3,
+            "r.BloomQuality": 5,
+        }
+        for name, value in expected.items():
+            self.graphics[name] = value
+        self.state.poll()
+        for name, value in expected.items():
+            with self.subTest(setting=name):
+                self.assertEqual(self.graphics[name], value)
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)
