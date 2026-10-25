@@ -17,3 +17,7 @@ Includes a standalone ZIP with UE4SS and a script-only ZIP for existing setups.
 [Building](mods/tsr-always-on/BUILD.md)
 
 Original code is [MIT licensed](LICENSE).
+
+**AI disclosure:** These mods, build tools, tests, and documentation were developed
+with substantial assistance from OpenAI Codex. The maintainer directed the work
+and tested the mods in game.
