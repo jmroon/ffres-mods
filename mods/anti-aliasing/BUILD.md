@@ -1,12 +1,16 @@
 # Building Anti-Aliasing Options
 
-Run from the repository root. Both targets use Python 3.11+ and Lupa 2.6:
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then enter
+the mod folder from the repository root. Both targets use Python 3.11+ and Lupa 2.6:
 
 ```powershell
-python -m venv .venv
-.venv\Scripts\python -m pip install -r mods/anti-aliasing/requirements-dev.txt
-.venv\Scripts\python -m unittest discover -s mods/anti-aliasing/tests -v
+cd mods/anti-aliasing
+uv run --locked python -m unittest discover -s tests -v
 ```
+
+uv creates an ignored `.venv` here and installs the development dependencies from
+`uv.lock`; no manual activation is needed. Keep `pyproject.toml` and `uv.lock`
+together. The project is a development environment, not a Python package.
 
 The source lives in this folder: `src/aa_core.lua` handles hooks and polling;
 `src/menu.lua` reads the saved choice and previews menu edits; `src/tsr.lua`
@@ -16,7 +20,7 @@ its own copy of `aa_core.lua`. The single `VERSION` applies to both targets.
 ## TSR-only
 
 ```powershell
-.venv\Scripts\python mods/anti-aliasing/tools/build_release.py --variant tsr
+uv run --locked tools/build_release.py --variant tsr
 ```
 
 No game assets, mappings, retoc or .NET are needed.
@@ -34,13 +38,13 @@ Requires the .NET 10 SDK, retoc 0.1.5 and these read-only inputs:
 Example extraction, with no menu override installed:
 
 ```powershell
-retoc to-legacy "D:\Games\FINAL FANTASY RESONANCE\FFRS\Content\Paks" build/vanilla --filter DT_OP_GraphicSetting --no-shaders --version UE5_6
+retoc to-legacy "D:\Games\FINAL FANTASY RESONANCE\FFRS\Content\Paks" ../../build/vanilla --filter DT_OP_GraphicSetting --no-shaders --version UE5_6
 ```
 
 Build with your local paths:
 
 ```powershell
-.venv\Scripts\python mods/anti-aliasing/tools/build_release.py --variant menu --source build/vanilla --mappings "D:\ModTools\FFRS.usmap" --retoc "D:\ModTools\retoc.exe" --game-paks "D:\Games\FINAL FANTASY RESONANCE\FFRS\Content\Paks"
+uv run --locked tools/build_release.py --variant menu --source ../../build/vanilla --mappings "D:\ModTools\FFRS.usmap" --retoc "D:\ModTools\retoc.exe" --game-paks "D:\Games\FINAL FANTASY RESONANCE\FFRS\Content\Paks"
 ```
 
 If needed, pass `--dotnet "D:\ModTools\dotnet\dotnet.exe"`.
@@ -62,6 +66,8 @@ Its hash is checked against the tested version. Bundling preserves its DLLs,
 helper and license, supplies the tested Unreal 5.6 override, and omits example mods.
 
 ## Output and verification
+
+Output paths below are relative to the repository root.
 
 | Target | ZIP in `dist/` | Installed folder under `ue4ss/Mods` |
 | --- | --- | --- |
