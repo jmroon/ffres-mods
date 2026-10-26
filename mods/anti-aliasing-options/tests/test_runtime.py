@@ -1,12 +1,13 @@
 """Exercise the production Lua against a small Unreal/UE4SS fixture."""
 
 from pathlib import Path
+import sys
 import unittest
 
-from lupa.lua54 import LuaRuntime
-
 MOD = Path(__file__).resolve().parents[1]
-FIXTURE = MOD.parents[1] / "tests/unreal_fixture.lua"
+sys.path.insert(0, str(MOD.parents[1] / "tests"))
+from runtime import load_mod
+
 AA_METHOD = "r.AntiAliasingMethod"
 MENU_HOOK = "/Script/mucha.CPP_OptionFunctionHandler:HandleChangeAAType"
 CHOICE_METHODS = {0: 0, 1: 1, 2: 2, 3: 4}
@@ -14,9 +15,7 @@ CHOICE_METHODS = {0: 0, 1: 1, 2: 2, 3: 4}
 
 class RuntimeTests(unittest.TestCase):
     def setUp(self):
-        self.lua = LuaRuntime()
-        self.lua.execute(FIXTURE.read_text())
-        self.lua.execute((MOD / "src/main.lua").read_text())
+        self.lua = load_mod(MOD)
         self.state = self.lua.globals()
         self.graphics = self.state["values"]
         self.state.poll()  # Register hooks and apply the fixture's saved TSR choice.
@@ -67,6 +66,12 @@ class RuntimeTests(unittest.TestCase):
         self.state.saved.Value = 3
         self.state.poll()
         self.assert_method(4)
+
+    def test_menu_without_choice_restores_saved_method(self):
+        self.state.saved.Value = 2
+        self.graphics[AA_METHOD] = 1
+        self.preview_choice(None)
+        self.assert_method(2)
 
     def test_unknown_choices_skip_without_looking_up_the_player(self):
         for choice in (-1, 4, 7, 1.5):

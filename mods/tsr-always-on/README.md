@@ -8,7 +8,8 @@ Extract the **Standalone** ZIP beside `FFRS.exe`, then launch normally.
 Already have UE4SS? Use **Script-only** to preserve your loader configuration.
 Use this mod or Anti-Aliasing Options, not both.
 
-[Installation and removal](INSTALL.txt) · [Lua script](src/main.lua) ·
+[Installation and removal](INSTALL.txt) · [Entry script](src/main.lua) ·
+[Shared core](../../shared/aa_core.lua) ·
 [Building](BUILD.md)
 
 [Download both packages](https://github.com/jmroon/ffres-mods/releases/tag/tsr-always-on-v1.0.0).

@@ -5,7 +5,8 @@ and retoc 0.1.5 are required. No Unreal Editor installation is needed.
 
 These are build/test tools; none are installed with the mod:
 
-* `tools/build_release.py` runs tests, packages the mod, and checks the ZIP.
+* Repository `tools/build_release.py --variant menu` runs tests and packages the mod.
+* Repository `tools/menu_assets.py` verifies inputs and runs asset conversion.
 * `tools/MenuAssets/Program.cs` adds the AA row and choices using UAssetAPI
   1.1.0, which handles reading and writing the asset format.
 * `tests/test_runtime.py` tests the Lua script using the shared
@@ -44,7 +45,7 @@ do not simply remove the check to support a new game build.
 Build:
 
 ```powershell
-.venv\Scripts\python mods/anti-aliasing-options/tools/build_release.py --source build/vanilla --mappings "D:\ModTools\FFRS.usmap" --retoc "D:\ModTools\retoc.exe" --game-paks "D:\Games\FINAL FANTASY RESONANCE\FFRS\Content\Paks"
+.venv\Scripts\python tools/build_release.py --variant menu --source build/vanilla --mappings "D:\ModTools\FFRS.usmap" --retoc "D:\ModTools\retoc.exe" --game-paks "D:\Games\FINAL FANTASY RESONANCE\FFRS\Content\Paks"
 ```
 
 The build restores the pinned UAssetAPI dependency from NuGet and compiles the
@@ -61,10 +62,15 @@ after IoStore conversion. It then writes one file to the ignored `dist/` directo
 
 * `Anti-Aliasing-Options-1.0.0.zip`
 
-The ZIP contains only the five mod files and README.txt, including credits and
-the MIT license. The build checks its contents and requires the runtime script
-to match `src/main.lua` byte-for-byte. Checks report to the console; no checksum
-files, manifests or verification reports are generated.
+The ZIP includes the entry script, [shared core](../../shared/aa_core.lua),
+activation marker, three menu containers and README.txt with credits and license.
+The core is copied into the mod's own `Scripts` folder. Every build tests both
+variants, checks packaged files against their sources, and reruns the menu tests
+using the Lua files extracted from the ZIP. No checksum files or reports are shipped.
+
+To include UE4SS, add `--bundle-loader --ue4ss "D:\ModTools\UE4SS_v3.0.1-1181-g83330635.zip"`.
+This produces `Anti-Aliasing-Options-1.0.0-Standalone.zip`. Use the same tested
+non-dev loader archive described in the [TSR build instructions](../tsr-always-on/BUILD.md).
 
 Each build uses a fresh temporary folder under `build/`. Game files and
 caller-supplied input folders are only read. The build restores .NET dependencies

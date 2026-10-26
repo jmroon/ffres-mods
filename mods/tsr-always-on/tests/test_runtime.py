@@ -1,21 +1,19 @@
 """Verify automatic TSR without menu assets, option saves, or other graphics edits."""
 
 from pathlib import Path
+import sys
 import unittest
 
-from lupa.lua54 import LuaRuntime
-
 MOD = Path(__file__).resolve().parents[1]
-FIXTURE = MOD.parents[1] / "tests/unreal_fixture.lua"
+sys.path.insert(0, str(MOD.parents[1] / "tests"))
+from runtime import load_mod
+
 AA_METHOD = "r.AntiAliasingMethod"
 
 
 class RuntimeTests(unittest.TestCase):
     def start(self, setup=""):
-        self.lua = LuaRuntime()
-        self.lua.execute(FIXTURE.read_text())
-        self.lua.execute(setup)
-        self.lua.execute((MOD / "src/main.lua").read_text())
+        self.lua = load_mod(MOD, setup)
         self.state = self.lua.globals()
         self.graphics = self.state["values"]
 
@@ -100,6 +98,35 @@ class RuntimeTests(unittest.TestCase):
         self.state.queued = None
         self.state.holdQueue = False
         pending()
+        self.assert_tsr()
+
+    def test_failed_write_retries_and_rate_limits_errors(self):
+        self.start("""
+            now = 100
+            os.time = function() return now end
+            rejectWrites = true
+            local execute = console.ExecuteConsoleCommand
+            console.ExecuteConsoleCommand = function(...)
+                if not rejectWrites then execute(...) end
+            end
+        """)
+        self.state.poll()
+        self.state.poll()
+        self.assertEqual(self.graphics[AA_METHOD], 1)
+        self.assertEqual(len(self.state.logs), 1)
+        self.assertIn("Could not apply TSR", self.state.logs[1])
+        self.state.now = 160
+        self.state.poll()
+        self.assertEqual(len(self.state.logs), 2)
+        self.state.rejectWrites = False
+        self.state.poll()
+        self.assert_tsr()
+        self.assertEqual(self.state.logs[3], "[TSR Always On] Applied TSR\n")
+
+    def test_menu_event_ignores_the_games_choice_argument(self):
+        self.graphics[AA_METHOD] = 1
+        hook = self.state.registered["/Script/mucha.CPP_OptionFunctionHandler:HandleChangeAAType"]
+        self.assertIsNone(hook[2](None, None))
         self.assert_tsr()
 
     def test_other_graphics_settings_are_untouched(self):

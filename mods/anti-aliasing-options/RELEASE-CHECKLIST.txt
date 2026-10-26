@@ -2,8 +2,9 @@ BEFORE PUBLICATION
 
 Local preparation:
 - Run tests/test_runtime.py using requirements-dev.txt.
-- Rebuild with tools/build_release.py; it runs the Lua tests and asset checks.
-- Confirm the ZIP contains only the five mod files and README.txt.
+- Rebuild with repository tools/build_release.py --variant menu; it runs the Lua tests and asset checks.
+- Confirm the ZIP contains the entry script, core, activation marker, three menu containers and README.txt
+  (plus UE4SS files when --bundle-loader is used).
 - Review the Git diff for personal paths, saves, logs, proprietary input assets
   and credentials. Generated files belong in ignored build/ and dist/ only.
 

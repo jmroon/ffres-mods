@@ -16,6 +16,10 @@ Includes a standalone ZIP with UE4SS and a script-only ZIP for existing setups.
 [Source](mods/tsr-always-on/src/main.lua) ·
 [Building](mods/tsr-always-on/BUILD.md)
 
+Both mods use the same [AA core](shared/aa_core.lua). The build targets are
+`python tools/build_release.py --variant menu` and `--variant tsr`; see each mod's
+build instructions for inputs and optional loader bundling.
+
 Original code is [MIT licensed](LICENSE).
 
 **AI disclosure:** These mods, build tools, tests, and documentation were developed
