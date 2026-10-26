@@ -1,7 +1,9 @@
-Unreleased
+1.0.1
 
-- Consolidate Menu and TSR-only into one source folder with separate build targets.
-- Keep installed folder names, release filenames and runtime behavior unchanged.
+- Publish Menu and TSR-only together, each with and without the bundled UE4SS loader.
+- Share the hooks and polling core between both variants, with no intended behavior changes.
+- Consolidate the source and build tooling; preserve installed folder names.
+- Refresh installation and compatibility documentation.
 
 1.0.0
 

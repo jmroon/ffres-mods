@@ -99,10 +99,10 @@ Output paths below are relative to the repository root.
 
 | Target | ZIP in `dist/` | Installed folder under `ue4ss/Mods` |
 | --- | --- | --- |
-| Menu | `Anti-Aliasing-Options-1.0.0.zip` | `AntiAliasingOptions` |
-| TSR-only | `TSR-Always-On-1.0.0-Script-only.zip` | `TSRAlwaysOn` |
+| Menu | `Anti-Aliasing-Options-1.0.1.zip` | `AntiAliasingOptions` |
+| TSR-only | `TSR-Always-On-1.0.1-Script-only.zip` | `TSRAlwaysOn` |
 
-With `--bundle-loader`, filenames end in `-1.0.0-Standalone.zip` for either target.
+With `--bundle-loader`, filenames end in `-1.0.1-Standalone.zip` for either target.
 Only Menu includes `zz_AntiAliasingOptions_P.pak/.ucas/.utoc`.
 
 Every build runs both runtime test suites, checks ZIP entries against their
