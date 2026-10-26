@@ -1,0 +1,13 @@
+BEFORE PUBLISHING A PACKAGE UPDATE
+
+- Run both suites: python -m unittest discover -s mods/anti-aliasing/tests -v.
+- Build --variant menu and --variant tsr, with and without --bundle-loader.
+  The builder verifies Lua behavior, archive contents and menu asset conversion.
+- Review the diff; keep game assets, mappings, saves, logs and credentials out of Git.
+- Test each variant separately in game through loads, cutscenes and restart.
+  For Menu, check each method, saved selection and cancelling an uncommitted edit.
+  For TSR-only, check automatic activation without menu assets.
+- Confirm other graphics settings and unrelated mods stay unchanged.
+- Verify installation, switching variants and removal using INSTALL.txt.
+- Update VERSION for a new package release, and review credits, Nexus copy and media.
+- Obtain publication approval. Source pushes and release uploads are separate actions.

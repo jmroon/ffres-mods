@@ -1,0 +1,48 @@
+ANTI-ALIASING OPTIONS
+
+Choose one variant:
+- Menu (Anti-Aliasing-Options ZIP): adds Off / FXAA / TAA / TSR to Graphics
+  Settings > AA Method and maintains your saved choice.
+- TSR-only (TSR-Always-On ZIP): keeps TSR enabled, without changing the menu
+  or accessing saved options.
+
+Both maintain the AA method through loads and cutscenes. Other graphics
+settings stay unchanged. TSR costs more GPU time than FXAA.
+
+INSTALL
+
+1. Close the game. Use only one variant; uninstall the other before switching.
+2. For a game without UE4SS, use a Standalone ZIP: the loader is included and
+   configured. Otherwise use the package without the loader to preserve your
+   existing UE4SS configuration.
+3. Extract the ZIP beside FFRS.exe, merging folders, then launch normally.
+   Menu variant: choose Graphics Settings > AA Method and Apply.
+   TSR-only: TSR is applied automatically once a player/world is available.
+
+No Engine.ini edits are needed.
+
+MANUAL UE4SS SETUP (only if using a package without a loader)
+
+Tested UE4SS: v3.0.1-1181-g83330635 (non-dev).
+https://github.com/UE4SS-RE/RE-UE4SS/releases/tag/experimental-latest
+Place dwmapi.dll and the ue4ss folder in FFRS/Binaries/Win64, preserving
+existing mods. Our tested setup uses these values in the existing
+[EngineVersionOverride] section of ue4ss/UE4SS-settings.ini:
+MajorVersion = 5
+MinorVersion = 6
+
+UNINSTALL / SWITCH VARIANTS
+
+Close the game. Under FFRS/Binaries/Win64/ue4ss/Mods, remove the installed
+variant's folder: AntiAliasingOptions for Menu, or TSRAlwaysOn for TSR-only.
+For Menu, also remove zz_AntiAliasingOptions_P.pak/.ucas/.utoc from
+FFRS/Content/Paks/~mods. Preserve other mods and your saves.
+If you installed Standalone and no other mods use UE4SS, you may also remove
+its dwmapi.dll and ue4ss folder from FFRS/Binaries/Win64.
+
+Source: https://github.com/jmroon/ffres-mods
+UE4SS: https://github.com/UE4SS-RE/RE-UE4SS
+Standalone packages retain UE4SS's copyright and license in ue4ss/LICENSE.
+Credits: UE4SS-RE contributors and trumank/retoc contributors.
+MIT covers original mod code and documentation; game assets retain their
+owners' rights. License follows.

@@ -1,4 +1,4 @@
-"""Build either AA mod, optionally with UE4SS, and test the packaged Lua."""
+"""Build either AA variant, optionally with UE4SS, and test the packaged Lua."""
 
 import argparse
 import os
@@ -12,29 +12,30 @@ from menu_assets import build_menu_assets
 from ue4ss import loader_files
 
 REPO = Path(__file__).resolve().parents[1]
+MOD = REPO / "mods/anti-aliasing"
 BINARIES = "FFRS/Binaries/Win64"
-# Source directory, installed folder, release filename.
+# Keep installed folder and release names compatible with existing downloads.
 VARIANTS = {
-    "menu": ("anti-aliasing-options", "AntiAliasingOptions", "Anti-Aliasing-Options"),
-    "tsr": ("tsr-always-on", "TSRAlwaysOn", "TSR-Always-On"),
+    "menu": ("AntiAliasingOptions", "Anti-Aliasing-Options"),
+    "tsr": ("TSRAlwaysOn", "TSR-Always-On"),
 }
 
 
-def run_tests(mod, scripts=None):
+def run_tests(variant, scripts=None):
     env = os.environ.copy()
     env.pop("FFRES_TEST_SCRIPTS", None)
     if scripts is not None:
         env["FFRES_TEST_SCRIPTS"] = str(scripts)
-    subprocess.run([sys.executable, str(mod / "tests/test_runtime.py")], env=env, check=True)
+    subprocess.run([sys.executable, str(MOD / "tests" / f"test_{variant}.py")], env=env, check=True)
 
 
-def runtime_files(mod, mod_folder):
+def runtime_files(variant, mod_folder):
     runtime = f"{BINARIES}/ue4ss/Mods/{mod_folder}"
-    readme = (mod / "INSTALL.txt").read_text(encoding="utf-8")
+    readme = (MOD / "INSTALL.txt").read_text(encoding="utf-8")
     license_text = (REPO / "LICENSE").read_text(encoding="utf-8")
     return {
-        f"{runtime}/Scripts/main.lua": (mod / "src/main.lua").read_bytes(),
-        f"{runtime}/Scripts/aa_core.lua": (REPO / "shared/aa_core.lua").read_bytes(),
+        f"{runtime}/Scripts/main.lua": (MOD / "src" / f"{variant}.lua").read_bytes(),
+        f"{runtime}/Scripts/aa_core.lua": (MOD / "src/aa_core.lua").read_bytes(),
         f"{runtime}/enabled.txt": b"",
         "README.txt": (readme + "\n" + license_text).encode("utf-8"),
     }
@@ -51,7 +52,7 @@ def write_zip(path, files):
             archive.writestr(info, content, compresslevel=9)
 
 
-def verify_zip(path, files, mod, mod_folder, extracted):
+def verify_zip(path, files, variant, mod_folder, extracted):
     with zipfile.ZipFile(path) as archive:
         names = archive.namelist()
         if set(names) != set(files) or len(names) != len(files):
@@ -63,7 +64,7 @@ def verify_zip(path, files, mod, mod_folder, extracted):
                 raise ValueError(f"Packaged content differs: {name}")
         archive.extractall(extracted)
     scripts = extracted / BINARIES / "ue4ss/Mods" / mod_folder / "Scripts"
-    run_tests(mod, scripts)
+    run_tests(variant, scripts)
 
 
 def parse_arguments():
@@ -90,16 +91,15 @@ def parse_arguments():
 
 def main():
     args = parse_arguments()
-    directory, mod_folder, release_name = VARIANTS[args.variant]
-    mod = REPO / "mods" / directory
-    files = runtime_files(mod, mod_folder)
+    mod_folder, release_name = VARIANTS[args.variant]
+    files = runtime_files(args.variant, mod_folder)
     if args.bundle_loader:
         files.update(loader_files(args.ue4ss, mod_folder))
     # Both entry scripts depend on the core, so check both on every build.
-    for source, _, _ in VARIANTS.values():
-        run_tests(REPO / "mods" / source)
+    for variant in VARIANTS:
+        run_tests(variant)
 
-    version = (mod / "VERSION").read_text().strip()
+    version = (MOD / "VERSION").read_text().strip()
     suffix = ""
     if args.bundle_loader:
         suffix = "-Standalone"
@@ -107,7 +107,7 @@ def main():
         suffix = "-Script-only"
     destination = REPO / "dist" / f"{release_name}-{version}{suffix}.zip"
     destination.parent.mkdir(exist_ok=True)
-    build_root = REPO / "build" / directory
+    build_root = REPO / "build/anti-aliasing" / args.variant
     build_root.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="release-", dir=build_root) as directory:
         work = Path(directory)
@@ -115,7 +115,7 @@ def main():
             files.update(build_menu_assets(args, work))
         candidate = work / "candidate.zip"
         write_zip(candidate, files)
-        verify_zip(candidate, files, mod, mod_folder, work / "extracted")
+        verify_zip(candidate, files, args.variant, mod_folder, work / "extracted")
         candidate.replace(destination)
     print(f"Built and verified: {destination} ({len(files)} files)")
 

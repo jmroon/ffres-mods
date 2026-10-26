@@ -4,8 +4,9 @@ Original mod code and documentation: jmroon, MIT (see LICENSE).
 
 UE4SS by the UE4SS-RE contributors provides the runtime Lua interface.
 https://github.com/UE4SS-RE/RE-UE4SS
-UE4SS is a separate dependency, not redistributed in this package. Its own
-license and third-party notices apply to it.
+Standalone packages include the tested UE4SS loader and preserve its MIT
+copyright and license in ue4ss/LICENSE. Packages without a loader require an
+existing compatible UE4SS installation.
 Tested download filename: UE4SS_v3.0.1-1181-g83330635.zip
 
 retoc by trumank and contributors is used to build IoStore containers.
@@ -16,7 +17,7 @@ Lupa provides the Lua runtime for automated development tests.
 https://github.com/scoder/lupa
 Tested version: 2.6. It is not needed to play and is not redistributed.
 
-The release containers contain a modified game graphics-menu table and a
+Only the Menu variant includes release containers, which contain a modified game graphics-menu table and a
 derived labels table. Game content and trademarks belong to their respective
 owners and are NOT covered by this repository's MIT license. The repository
 contains build code, not the original extracted assets or mapping files.

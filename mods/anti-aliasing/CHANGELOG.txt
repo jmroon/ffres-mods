@@ -1,0 +1,11 @@
+Unreleased
+
+- Consolidate Menu and TSR-only into one source folder with separate build targets.
+- Keep installed folder names, release filenames and runtime behavior unchanged.
+
+1.0.0
+
+- Menu variant: add AA Method choices Off / FXAA / TAA / TSR and preserve the saved choice.
+- TSR-only variant: enable TSR automatically without menu changes or save access.
+- Restore the AA method after loading and cutscene resets, with a lightweight fallback poll.
+- Leave rendering resolution, history quality and other graphics settings unchanged.

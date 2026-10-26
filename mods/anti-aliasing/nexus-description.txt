@@ -1,0 +1,25 @@
+Anti-Aliasing Options
+
+Two variants, one mod:
+- Menu: choose Off, FXAA, TAA or TSR in Graphics Settings > AA Method. Your
+  saved choice stays active through loads and cutscenes. The default is FXAA.
+- TSR-only: automatically keep TSR enabled, without menu changes or save access.
+
+Install only one variant. Each is available with UE4SS bundled (Standalone)
+or without a loader for existing UE4SS installations. Follow README.txt in the ZIP.
+
+Only the AA method is controlled. Rendering resolution, TSR history quality,
+depth of field, bloom, exposure and the original AA quality setting stay unchanged.
+TSR can reduce shimmer, especially in motion, at a higher GPU cost than FXAA.
+No DLSS, DLAA, frame generation or resolution presets are included.
+
+Tested: Windows Steam build 24250053 and UE4SS v3.0.1-1181-g83330635 (non-dev).
+May conflict with other mods that force an AA method; the Menu variant also
+replaces the graphics-menu table. Game updates may require a mod update.
+
+Source and credits: https://github.com/jmroon/ffres-mods
+Original code: jmroon, MIT. Developed with substantial OpenAI Codex assistance.
+UE4SS-RE and trumank/retoc contributors provide the runtime and asset tools.
+Game-derived assets retain their owners' rights.
+
+Draft for the shared Nexus page; review media and RELEASE-CHECKLIST.txt before publishing.

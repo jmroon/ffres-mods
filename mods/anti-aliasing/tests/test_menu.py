@@ -1,11 +1,7 @@
 """Exercise the production Lua against a small Unreal/UE4SS fixture."""
 
-from pathlib import Path
-import sys
 import unittest
 
-MOD = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(MOD.parents[1] / "tests"))
 from runtime import load_mod
 
 AA_METHOD = "r.AntiAliasingMethod"
@@ -15,7 +11,7 @@ CHOICE_METHODS = {0: 0, 1: 1, 2: 2, 3: 4}
 
 class RuntimeTests(unittest.TestCase):
     def setUp(self):
-        self.lua = load_mod(MOD)
+        self.lua = load_mod("menu")
         self.state = self.lua.globals()
         self.graphics = self.state["values"]
         self.state.poll()  # Register hooks and apply the fixture's saved TSR choice.

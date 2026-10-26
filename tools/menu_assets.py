@@ -7,7 +7,7 @@ import shutil
 import subprocess
 
 REPO = Path(__file__).resolve().parents[1]
-MOD = REPO / "mods/anti-aliasing-options"
+MOD = REPO / "mods/anti-aliasing"
 CONTAINER = "zz_AntiAliasingOptions_P"
 CONTAINER_EXTENSIONS = ("pak", "ucas", "utoc")
 PAKS = "FFRS/Content/Paks/~mods"
@@ -53,7 +53,7 @@ def convert_and_verify(legacy, containers, roundtrip, retoc, game_paks, menu_too
 def build_menu_assets(args, work):
     check_inputs(args.source)
     project = MOD / "tools/MenuAssets/MenuAssets.csproj"
-    tool_output = REPO / "build/anti-aliasing-options/menu-tool"
+    tool_output = REPO / "build/anti-aliasing/menu-tool"
     run(args.dotnet, "build", project, "-c", "Release", "-p:RestoreLockedMode=true", "-o", tool_output)
     menu_tool = (args.dotnet, tool_output / "MenuAssets.dll")
 

@@ -1,11 +1,7 @@
 """Verify automatic TSR without menu assets, option saves, or other graphics edits."""
 
-from pathlib import Path
-import sys
 import unittest
 
-MOD = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(MOD.parents[1] / "tests"))
 from runtime import load_mod
 
 AA_METHOD = "r.AntiAliasingMethod"
@@ -13,7 +9,7 @@ AA_METHOD = "r.AntiAliasingMethod"
 
 class RuntimeTests(unittest.TestCase):
     def start(self, setup=""):
-        self.lua = load_mod(MOD, setup)
+        self.lua = load_mod("tsr", setup)
         self.state = self.lua.globals()
         self.graphics = self.state["values"]
 
