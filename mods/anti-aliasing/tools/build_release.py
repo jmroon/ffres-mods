@@ -11,8 +11,8 @@ import zipfile
 from menu_assets import build_menu_assets
 from ue4ss import loader_files
 
-REPO = Path(__file__).resolve().parents[1]
-MOD = REPO / "mods/anti-aliasing"
+MOD = Path(__file__).resolve().parents[1]
+REPO = MOD.parents[1]
 BINARIES = "FFRS/Binaries/Win64"
 # Keep installed folder and release names compatible with existing downloads.
 VARIANTS = {

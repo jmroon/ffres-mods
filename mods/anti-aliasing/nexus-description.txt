@@ -22,4 +22,4 @@ Original code: jmroon, MIT. Developed with substantial OpenAI Codex assistance.
 UE4SS-RE and trumank/retoc contributors provide the runtime and asset tools.
 Game-derived assets retain their owners' rights.
 
-Draft for the shared Nexus page; review media and RELEASE-CHECKLIST.txt before publishing.
+Draft for the shared Nexus page.

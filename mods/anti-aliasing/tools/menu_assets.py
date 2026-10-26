@@ -6,8 +6,8 @@ from pathlib import Path
 import shutil
 import subprocess
 
-REPO = Path(__file__).resolve().parents[1]
-MOD = REPO / "mods/anti-aliasing"
+MOD = Path(__file__).resolve().parents[1]
+REPO = MOD.parents[1]
 CONTAINER = "zz_AntiAliasingOptions_P"
 CONTAINER_EXTENSIONS = ("pak", "ucas", "utoc")
 PAKS = "FFRS/Content/Paks/~mods"

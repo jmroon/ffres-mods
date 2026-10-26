@@ -4,7 +4,7 @@ Run from the repository root. Both targets use Python 3.11+ and Lupa 2.6:
 
 ```powershell
 python -m venv .venv
-.venv\Scripts\python -m pip install -r requirements-dev.txt
+.venv\Scripts\python -m pip install -r mods/anti-aliasing/requirements-dev.txt
 .venv\Scripts\python -m unittest discover -s mods/anti-aliasing/tests -v
 ```
 
@@ -16,7 +16,7 @@ its own copy of `aa_core.lua`. The single `VERSION` applies to both targets.
 ## TSR-only
 
 ```powershell
-.venv\Scripts\python tools/build_release.py --variant tsr
+.venv\Scripts\python mods/anti-aliasing/tools/build_release.py --variant tsr
 ```
 
 No game assets, mappings, retoc or .NET are needed.
@@ -40,11 +40,11 @@ retoc to-legacy "D:\Games\FINAL FANTASY RESONANCE\FFRS\Content\Paks" build/vanil
 Build with your local paths:
 
 ```powershell
-.venv\Scripts\python tools/build_release.py --variant menu --source build/vanilla --mappings "D:\ModTools\FFRS.usmap" --retoc "D:\ModTools\retoc.exe" --game-paks "D:\Games\FINAL FANTASY RESONANCE\FFRS\Content\Paks"
+.venv\Scripts\python mods/anti-aliasing/tools/build_release.py --variant menu --source build/vanilla --mappings "D:\ModTools\FFRS.usmap" --retoc "D:\ModTools\retoc.exe" --game-paks "D:\Games\FINAL FANTASY RESONANCE\FFRS\Content\Paks"
 ```
 
 If needed, pass `--dotnet "D:\ModTools\dotnet\dotnet.exe"`.
-The build restores pinned UAssetAPI 1.1.0 and compiles `tools/MenuAssets`.
+The build restores pinned UAssetAPI 1.1.0 and compiles this mod's `tools/MenuAssets` project.
 Inputs must match `supported-inputs.json`; investigate mismatches instead of
 removing the check. Extracted game assets and mappings are never committed.
 
@@ -76,6 +76,8 @@ sources, then reruns the selected suite using only the packaged Lua files.
 Menu builds also verify lossless UAssetAPI input round-trips, unchanged original
 menu rows, correct new choices, and unchanged table contents after IoStore conversion.
 
-Builds only write to ignored `build/` and `dist/`. No checksum manifests or reports
-are shipped. Builds do not install the mod, alter game settings, or publish releases.
+Packages go to the repository's ignored `dist/`; scratch files go to `build/`.
+.NET also creates ignored intermediate files under `tools/MenuAssets/obj` and
+uses its NuGet cache. No checksum manifests or reports are shipped. Builds do not
+install the mod, alter game settings, or publish releases.
 In-game retesting of the shared-core packages remains pending.
