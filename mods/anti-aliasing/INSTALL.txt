@@ -24,7 +24,7 @@ No Engine.ini edits are needed.
 MANUAL UE4SS SETUP (only if using a package without a loader)
 
 Tested UE4SS: v3.0.1-1181-g83330635 (non-dev).
-https://github.com/UE4SS-RE/RE-UE4SS/releases/tag/experimental-latest
+https://github.com/UE4SS-RE/RE-UE4SS/releases/download/experimental/UE4SS_v3.0.1-1181-g83330635.zip
 Place dwmapi.dll and the ue4ss folder in FFRS/Binaries/Win64, preserving
 existing mods. Our tested setup uses these values in the existing
 [EngineVersionOverride] section of ue4ss/UE4SS-settings.ini:
