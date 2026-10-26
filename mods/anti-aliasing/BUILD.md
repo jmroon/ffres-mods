@@ -37,10 +37,11 @@ Requires the [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10
 - A compatible uncompressed version-4 `.usmap`; see mapping generation below.
 - The original game Paks folder, for `global.utoc` and `global.ucas` verification.
 
-Example extraction, with no menu override installed:
+Example extraction, with no menu override installed. `--no-parallel` avoids
+retoc intermittently omitting a table:
 
 ```powershell
-retoc to-legacy "D:\Games\FINAL FANTASY RESONANCE\FFRS\Content\Paks" ../../build/vanilla --filter DT_OP_GraphicSetting --no-shaders --version UE5_6
+retoc to-legacy "D:\Games\FINAL FANTASY RESONANCE\FFRS\Content\Paks" ../../build/vanilla --filter DT_OP_GraphicSetting --no-shaders --no-parallel --version UE5_6
 ```
 
 Build with your local paths:

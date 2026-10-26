@@ -44,8 +44,8 @@ extraction. Reusing an old extraction cannot verify the updated assets.
 Follow BUILD.md to build the menu target with that extraction, compatible mappings,
 retoc, and the updated game's original Paks. The builder checks source hashes,
 UAssetAPI round-trips, preservation of original menu rows, IoStore conversion,
-and packaged Lua behavior. If testing Standalone distribution, also build and
-test with the pinned bundled loader.
+and packaged Lua behavior. For each distributed Standalone variant, also build
+with the pinned bundled loader and verify that package in game.
 
 If hashes differ, compare the decoded vanilla tables and inspect the builder's
 assumptions before accepting new hashes. Keep the original baseline available for
@@ -57,8 +57,10 @@ version override, and hook/property names in `src/`.
 ## Guide in-game verification
 
 Test one variant at a time using the installation/switching instructions.
-First check the existing published packages. If changes are needed, repeat with
-the rebuilt candidates and record which package each result covers.
+First check every published package configuration, including Standalone with
+the exact loader and settings shipped in its ZIP. A newer local UE4SS does not
+validate those downloads. If changes are needed, repeat with rebuilt candidates;
+record the package, loader version, and settings each result covers.
 
 Give the user short, concrete actions and collect results as they go:
 
@@ -80,8 +82,10 @@ tests or a successful package build alone.
 
 ## Record the result and clear the monitor
 
-Once both variants are verified on the target build, update only `steam_build`
-unless reviewed asset changes also require new hashes. Keep extracted game files,
+Only advance `steam_build` once both variants and their distributed loader
+configurations are verified on the target build. If Standalone testing is
+missing or fails, leave the baseline unchanged and the maintenance issue open.
+Update asset hashes only for reviewed changes. Keep extracted game files,
 mappings, saves, and credentials out of Git.
 
 If existing downloads work, a compatibility acknowledgement is sufficient.
