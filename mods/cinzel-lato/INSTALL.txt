@@ -1,0 +1,26 @@
+Cinzel + Lato 1.0.0
+
+Cinzel Semibold headings; Lato menus, dialogue, character names and numbers.
+No UE4SS or runtime script required. Compatible with Anti-Aliasing Options.
+
+Install
+Close the game and remove other font mods, including any previous font-test
+variant. Extract this ZIP into the game folder beside FFRS.exe.
+
+Remove
+Close the game and delete only these files from FFRS/Content/Paks/~mods:
+  zz_CinzelSemiboldLato_P.pak
+  zz_CinzelSemiboldLato_P.ucas
+  zz_CinzelSemiboldLato_P.utoc
+
+Graphics settings, saves and original game files are untouched.
+Button artwork and image-based battle logos retain their original lettering.
+Cinzel has no italic face; chapter/title italic slots use upright Semibold.
+Lato's regular, bold and italic faces are preserved.
+
+Tested by the maintainer on Steam build 24250053. Other languages and every UI
+screen have not been exhaustively tested. Other font mods may conflict.
+
+Cinzel and Lato use the SIL Open Font License; notices are in Font Licenses.
+Source and credits: https://github.com/jmroon/ffres-mods
+Developed with substantial assistance from OpenAI Codex.

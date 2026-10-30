@@ -10,6 +10,12 @@ Both preserve other graphics settings and can be packaged with or without UE4SS.
 [Source](mods/anti-aliasing/src) ·
 [Building](mods/anti-aliasing/BUILD.md)
 
+**[Cinzel + Lato](mods/cinzel-lato/README.md)** gives headings a classic serif
+and uses Lato for menus, dialogue and numbers. No UE4SS required.
+
+[Installation](mods/cinzel-lato/INSTALL.txt) ·
+[Building](mods/cinzel-lato/BUILD.md)
+
 Original code is [MIT licensed](LICENSE).
 
 **AI disclosure:** These mods, build tools, tests, and documentation were developed

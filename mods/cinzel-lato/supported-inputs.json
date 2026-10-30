@@ -1,0 +1,9 @@
+{
+  "steam_build": "24250053",
+  "assets": {
+    "FFRS/Content/UI/Common/Layout/Subhead/WBP_SystemSubhead.uasset": "de91f04092d87cadc6731138437ed7f7cc3894b3443da41a7605177ba78509f9",
+    "FFRS/Content/UI/Common/Layout/Subhead/WBP_SystemSubhead.uexp": "52af3315492608474d81f8e00e6e4a40588333e4d56044c3ca773b4b1c43725c",
+    "FFRS/Content/UI/Font/SystemTextNUM.uasset": "23b5dc4f8d6b0787f0b51616abdc7afa44aa800d2fed58614eade030463efb6a",
+    "FFRS/Content/UI/Font/SystemTextNUM.uexp": "7e43bad49f866a1e0e65769fa27ff5fcc908728a3bbc062f0207440e37d8d66f"
+  }
+}
