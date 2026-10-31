@@ -1,0 +1,14 @@
+Parked Battle Dock prototype — not a supported release
+
+Close the game and back up the existing zz_CinzelSemiboldLato_P files first.
+Extract beside FFRS.exe. Use one font/UI variant at a time.
+The dock ZIP requires a compatible UE4SS installation already present.
+The font-only ZIP contains no runtime script and restores default font sizes.
+
+To switch from dock to font-only, replace all three font containers and remove
+FFRS/Binaries/Win64/ue4ss/Mods/BattleDockHelp/enabled.txt.
+Do not remove UE4SS itself if another mod uses it. Remove any older separate
+zzz_BattleDock_Test_P containers. Keep unrelated mods and settings intact.
+
+Both targets retain Cinzel/Lato faces and Lato narration. Neither changes AA
+or other graphics settings. See the source branch's STATUS.md for unverified cases.

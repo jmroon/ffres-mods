@@ -4,6 +4,24 @@
     "FFRS/Content/UI/Common/Layout/Subhead/WBP_SystemSubhead.uasset": "de91f04092d87cadc6731138437ed7f7cc3894b3443da41a7605177ba78509f9",
     "FFRS/Content/UI/Common/Layout/Subhead/WBP_SystemSubhead.uexp": "52af3315492608474d81f8e00e6e4a40588333e4d56044c3ca773b4b1c43725c",
     "FFRS/Content/UI/Font/SystemTextNUM.uasset": "23b5dc4f8d6b0787f0b51616abdc7afa44aa800d2fed58614eade030463efb6a",
-    "FFRS/Content/UI/Font/SystemTextNUM.uexp": "7e43bad49f866a1e0e65769fa27ff5fcc908728a3bbc062f0207440e37d8d66f"
+    "FFRS/Content/UI/Font/SystemTextNUM.uexp": "7e43bad49f866a1e0e65769fa27ff5fcc908728a3bbc062f0207440e37d8d66f",
+    "FFRS/Content/UI/Font/ChapterTitleText.uasset": "bb6f973978ee107044f294d298c4820e8be79fdd2508052c854f1e52385dfdd9",
+    "FFRS/Content/UI/Font/ChapterTitleText.uexp": "8812c2b90c2488a24b0cd2da50753e03d4c8c6f7ac59b21ba5848ad7008c4259",
+    "FFRS/Content/UI/Font/TelopText.uasset": "366aee3d09d1d60b18ec4314496151093fbfbb1842665f6961f522c510c754ea",
+    "FFRS/Content/UI/Font/TelopText.uexp": "4570dc9624809178b269fd58c239ba11c354071ec29650b74044111401801b43",
+    "FFRS/Content/UI/Event/TalkEvent/Window/WBP_TalkEvent_Caption_OP.uasset": "dcdd13aa6e346998782fb2c55e32273e0e4427892bc44284ba9a190ae56bebc0",
+    "FFRS/Content/UI/Event/TalkEvent/Window/WBP_TalkEvent_Caption_OP.uexp": "2f2ca4e406d778cbfa06aae8d1758f84858cf91653091928917ce64f2dd00812",
+    "FFRS/Content/UI/Event/TalkEvent/Window/WBP_TalkEvent_Caption_telop.uasset": "47d1ebc0c261199dd3fef1bb9247918c8a0934d8c925ca4124e7f321697b455a",
+    "FFRS/Content/UI/Event/TalkEvent/Window/WBP_TalkEvent_Caption_telop.uexp": "b9809a3eacc68991bc8c2a0c99db9648a605d7769679d895dfaf9bcf636b5d01",
+    "FFRS/Content/UI/Event/TalkEvent/Window/WBP_TalkEvent_Caption_telopB.uasset": "dc2c1f0a357bbf0bbe61b6fec84b6e748404d4149e66939cb894a1686faccd49",
+    "FFRS/Content/UI/Event/TalkEvent/Window/WBP_TalkEvent_Caption_telopB.uexp": "b879e4d57dc89594dec50cd0375f9f2fc8dd7e4df283e594a9de7e4957ee3e35",
+    "FFRS/Content/UI/Event/TalkEvent/Window/WBP_TalkEvent_Caption_telopC.uasset": "3d40b85f525050b662924ca41ac9695622025661714110b8e141695a9f1678ed",
+    "FFRS/Content/UI/Event/TalkEvent/Window/WBP_TalkEvent_Caption_telopC.uexp": "a9741ca9705ba3d29c8e56a6610c3fc0c0724ebe01416172486645436b59d3c5",
+    "FFRS/Content/UI/Battle/Unit/Statuses/WBP_Btl_UnitStatus.uasset": "8741937979dde896b29841e1ed9133de25e94af8bc059f0717fa7efacc72fa7c",
+    "FFRS/Content/UI/Battle/Unit/Statuses/WBP_Btl_UnitStatus.uexp": "24a13fbc9e60e186081f2055c1b88c2a66363338af20c12d53739b480f552d09",
+    "FFRS/Content/UI/Font/UnipueText.uasset": "4359efc0550dd16694c60fd8b8a7f908c7abe0dfac2df253a38d82084bdc4332",
+    "FFRS/Content/UI/Font/UnipueText.uexp": "ce9417b8920c8d9dcda32a251f81c470f4a14b8043ba2670c40975075dfcb9f3",
+    "FFRS/Content/UI/Common/Text/TextStyle/SystemText/BP_SystemTextStyle_PramNUM.uasset": "2fa561a9bb88505a7553934df66518f84273088829cf05f09d58fefc1549bbdc",
+    "FFRS/Content/UI/Common/Text/TextStyle/SystemText/BP_SystemTextStyle_PramNUM.uexp": "fa5ed00923f3cf0ddc6622bfc2c258f933c70c3e81958a9918dc9ed2fee52f73"
   }
 }

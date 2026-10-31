@@ -1,6 +1,7 @@
-Cinzel + Lato 1.0.0
+Cinzel + Lato 1.0.1-battle15-test
 
-Cinzel Semibold headings; Lato menus, dialogue, character names and numbers.
+Cinzel Semibold headings; Lato menus, dialogue, narration, character names and numbers.
+Battle-panel test: names, HP/MP labels and numbers at size 15; lighter text shadows.
 No UE4SS or runtime script required. Compatible with Anti-Aliasing Options.
 
 Install

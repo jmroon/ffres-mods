@@ -122,10 +122,13 @@ def verify_containers(args, tool, legacy, containers, work):
                     shutil.copy2(path, target)
                 created.append(target)
         command = [args.retoc, "to-legacy", stage, work / "roundtrip", "--version", "UE5_6", "--no-shaders", "--no-parallel"]
-        for name in ("WBP_SystemSubhead", "SystemTextNUM"):
+        for name in ("WBP_SystemSubhead", "SystemTextNUM", "CL_NarrationText", "CL_OpeningNarrationText",
+                     "WBP_TalkEvent_Caption_OP", "WBP_TalkEvent_Caption_telop",
+                     "WBP_Btl_UnitStatus", "CL_BattleNameText", "CL_BattleNumberStyle"):
+            # The telop filter also includes the B and C variants.
             command.extend(["--filter", name])
         run(*command)
-        run(*tool, "verify", args.mappings, legacy, work / "roundtrip")
+        run(*tool, "verify", args.mappings, legacy, work / "roundtrip", args.source)
     finally:
         # Only unlink files created above; never recursively delete game paths.
         require(stage.resolve().parent == game_root, "Invalid validation cleanup path")

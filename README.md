@@ -2,6 +2,9 @@
 
 Mods for FINAL FANTASY RESONANCE.
 
+This WIP branch parks the unfinished [Battle Dock prototype](mods/battle-dock/README.md).
+It is shelved, not a release. See its [testing notes](mods/battle-dock/STATUS.md) before resuming.
+
 **[Anti-Aliasing Options](mods/anti-aliasing/README.md)** has two variants:
 choose Off / FXAA / TAA / TSR in the graphics menu, or keep TSR always on.
 Both preserve other graphics settings and can be packaged with or without UE4SS.
